@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Pets - Arcade Virtual Pet</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pets.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="arcade-machine">
+    <div class="device-frame">
+      <div class="screen-bezel">
+        <div class="screen-container">
+          <div class="scanlines"></div>
+          
+          <!-- Main Menu Screen -->
+          <div class="screen main-menu" id="mainMenu">
+            <div class="menu-header">
+              <h1 class="game-title">PIXEL PETS</h1>
+              <div class="title-stars">***</div>
+            </div>
+            <div class="menu-options" id="menuOptions">
+              <button class="menu-btn" data-menu="play">
+                <span class="btn-icon">1</span>
+                <span class="btn-text">PLAY</span>
+              </button>
+              <button class="menu-btn" data-menu="inventory">
+                <span class="btn-icon">2</span>
+                <span class="btn-text">INVENTORY</span>
+              </button>
+              <button class="menu-btn" data-menu="games">
+                <span class="btn-icon">3</span>
+                <span class="btn-text">MINI GAMES</span>
+              </button>
+              <button class="menu-btn" data-menu="stats">
+                <span class="btn-icon">4</span>
+                <span class="btn-text">STATS</span>
+              </button>
+              <button class="menu-btn" data-menu="store">
+                <span class="btn-icon">5</span>
+                <span class="btn-text">STORE</span>
+              </button>
+              <button class="menu-btn" data-menu="missions">
+                <span class="btn-icon">6</span>
+                <span class="btn-text">MISSIONS</span>
+              </button>
+            </div>
+            <div class="menu-footer">
+              <span class="blink">PRESS START</span>
+            </div>
+          </div>
+
+          <!-- Game Screen -->
+          <div class="screen game-screen" id="gameScreen" style="display: none;">
+            <div class="top-bar">
+              <div class="pet-selector" id="petSelector">
+                <button class="pet-tab-btn active" data-pet="0">1</button>
+              </div>
+              <div class="time-display" id="timeDisplay">00:00</div>
+            </div>
+
+            <div class="game-area">
+              <div class="pet-viewport" id="petViewport">
+                <div class="night-overlay" id="nightOverlay"></div>
+                <div class="stars" id="stars"></div>
+                <div class="background-scene" id="backgroundScene">
+                  <div class="cloud cloud-1"></div>
+                  <div class="cloud cloud-2"></div>
+                  <div class="ground"></div>
+                </div>
+                <div class="pet-display" id="petDisplay">
+                  <div class="pet" id="activePet">
+                    <div class="pet-body">
+                      <div class="pet-face">
+                        <div class="pet-eyes">
+                          <div class="eye left"></div>
+                          <div class="eye right"></div>
+                        </div>
+                        <div class="pet-mouth"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pet-shadow"></div>
+                </div>
+                <div class="status-bubbles" id="statusBubbles"></div>
+              </div>
+
+              <div class="stats-panel" id="statsPanel">
+                <div class="stat-row">
+                  <span class="stat-icon">H</span>
+                  <div class="stat-bar">
+                    <div class="stat-fill" id="hungerStat" style="width: 100%"></div>
+                  </div>
+                  <span class="stat-value" id="hungerVal">100</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-icon">J</span>
+                  <div class="stat-bar">
+                    <div class="stat-fill" id="happinessStat" style="width: 100%"></div>
+                  </div>
+                  <span class="stat-value" id="happinessVal">100</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-icon">E</span>
+                  <div class="stat-bar">
+                    <div class="stat-fill" id="energyStat" style="width: 100%"></div>
+                  </div>
+                  <span class="stat-value" id="energyVal">100</span>
+                </div>
+                <div class="skills-panel" id="skillsPanel">
+                  <div class="skill-row">
+                    <span class="skill-icon">❤️</span>
+                    <div class="skill-bar">
+                      <div class="skill-fill" id="affectionSkill" style="width: 0%"></div>
+                    </div>
+                  </div>
+                  <div class="skill-row">
+                    <span class="skill-icon">🧠</span>
+                    <div class="skill-bar">
+                      <div class="skill-fill" id="intelligenceSkill" style="width: 0%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons" id="actionButtons">
+              <button class="action-btn arcade-btn feed" data-action="feed">
+                <span class="btn-gfx"></span>
+                <span class="btn-text">FEED</span>
+              </button>
+              <button class="action-btn arcade-btn play" data-action="play">
+                <span class="btn-gfx"></span>
+                <span class="btn-text">PLAY</span>
+              </button>
+              <button class="action-btn arcade-btn sleep" data-action="sleep">
+                <span class="btn-gfx"></span>
+                <span class="btn-text">SLEEP</span>
+              </button>
+              <button class="action-btn arcade-btn heal" data-action="heal">
+                <span class="btn-gfx"></span>
+                <span class="btn-text">HEAL</span>
+              </button>
+            </div>
+
+            <div class="pet-info-bar" id="petInfoBar">
+              <span class="pet-name" id="displayPetName">---</span>
+              <span class="pet-stage" id="displayPetStage">BABY</span>
+              <span class="pet-age" id="displayPetAge">0H</span>
+            </div>
+          </div>
+
+          <!-- Inventory Screen -->
+          <div class="screen inventory-screen" id="inventoryScreen" style="display: none;">
+            <div class="screen-header">
+              <h2>INVENTORY</h2>
+            </div>
+            <div class="inventory-grid" id="inventoryGrid">
+              <div class="inv-slot empty" data-slot="0">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="1">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="2">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="3">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="4">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="5">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="6">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="7">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+              <div class="inv-slot empty" data-slot="8">
+                <span class="slot-empty">EMPTY</span>
+              </div>
+            </div>
+            <div class="inventory-info" id="inventoryInfo">
+              <p>Collect items by playing mini-games!</p>
+            </div>
+            <button class="back-btn arcade-btn" data-back="petSelect">BACK</button>
+          </div>
+
+          <!-- Mini Games Screen -->
+          <div class="screen games-screen" id="gamesScreen" style="display: none;">
+            <div class="screen-header">
+              <h2>MINI GAMES</h2>
+            </div>
+            <div class="games-grid" id="gamesGrid">
+              <button class="game-card" data-game="catch">
+                <div class="game-preview catch-game"></div>
+                <span>CATCH</span>
+              </button>
+              <button class="game-card" data-game="memory">
+                <div class="game-preview memory-game"></div>
+                <span>MEMORY</span>
+              </button>
+              <button class="game-card" data-game="reaction">
+                <div class="game-preview reaction-game"></div>
+                <span>REFLEX</span>
+              </button>
+            </div>
+            <button class="back-btn arcade-btn" data-back="petSelect">BACK</button>
+          </div>
+
+          <!-- Stats Screen -->
+          <div class="screen stats-screen" id="statsScreen" style="display: none;">
+            <div class="screen-header">
+              <h2>STATS</h2>
+            </div>
+            <div class="stats-content" id="statsContent">
+              <div class="stat-block">
+                <h3>PETS: <span id="totalPets">0</span>/5</h3>
+              </div>
+              <div class="stat-block">
+                <h3>GAMES PLAYED: <span id="gamesPlayed">0</span></h3>
+              </div>
+              <div class="stat-block">
+                <h3>HIGH SCORE: <span id="highScore">0</span></h3>
+              </div>
+              <div class="stat-block">
+                <h3>ACHIEVEMENTS: <span id="achievementCount">0</span></h3>
+              </div>
+            </div>
+            <button class="arcade-btn" id="viewAchievementsBtn">ACHIEVEMENTS</button>
+            <button class="back-btn arcade-btn" data-back="petSelect">BACK</button>
+          </div>
+
+          <!-- Achievements Screen -->
+          <div class="screen achievements-screen" id="achievementsScreen" style="display: none;">
+            <div class="screen-header">
+              <h2>ACHIEVEMENTS</h2>
+            </div>
+            <div class="achievements-list" id="achievementsList"></div>
+            <button class="back-btn arcade-btn" data-back="statsScreen">BACK</button>
+          </div>
+
+          <!-- Missions Screen -->
+          <div class="screen missions-screen" id="missionsScreen" style="display: none;">
+            <div class="screen-header">
+              <h2>DAILY MISSIONS</h2>
+            </div>
+            <div class="missions-list" id="missionsList"></div>
+            <button class="back-btn arcade-btn" data-back="menu">BACK</button>
+          </div>
+
+          <!-- Store Screen -->
+          <div class="screen store-screen" id="storeScreen" style="display: none;">
+            <div class="screen-header">
+              <h2>STORE</h2>
+            </div>
+            <div class="store-coins">
+              <span>COINS: <span id="storeCoins">0</span></span>
+            </div>
+            <div class="store-grid" id="storeGrid">
+              <div class="store-item" data-item="cookie" data-price="10">
+                <div class="item-icon">🍪</div>
+                <div class="item-name">Cookie</div>
+                <div class="item-price">10 COINS</div>
+              </div>
+              <div class="store-item" data-item="apple" data-price="15">
+                <div class="item-icon">🍎</div>
+                <div class="item-name">Apple</div>
+                <div class="item-price">15 COINS</div>
+              </div>
+              <div class="store-item" data-item="cake" data-price="30">
+                <div class="item-icon">🎂</div>
+                <div class="item-name">Cake</div>
+                <div class="item-price">30 COINS</div>
+              </div>
+              <div class="store-item" data-item="candy" data-price="20">
+                <div class="item-icon">🍬</div>
+                <div class="item-name">Candy</div>
+                <div class="item-price">20 COINS</div>
+              </div>
+              <div class="store-item" data-item="potion" data-price="50">
+                <div class="item-icon">🧪</div>
+                <div class="item-name">Potion</div>
+                <div class="item-price">50 COINS</div>
+              </div>
+              <div class="store-item" data-item="diamond" data-price="100">
+                <div class="item-icon">💎</div>
+                <div class="item-name">Diamond</div>
+                <div class="item-price">100 COINS</div>
+              </div>
+            </div>
+            <button class="back-btn arcade-btn" data-back="petSelect">BACK</button>
+          </div>
+
+          <!-- Pet Select Screen -->
+          <div class="screen pet-select" id="petSelect" style="display: none;">
+            <div class="screen-header">
+              <h2>SELECT PET</h2>
+            </div>
+            <div class="pet-cards" id="petCards">
+              <!-- Pet cards generated by JS -->
+            </div>
+            <button class="add-pet-btn arcade-btn" id="addPetBtn">+ NEW PET</button>
+            <button class="back-btn arcade-btn" data-back="menu">BACK</button>
+          </div>
+
+          <!-- Create Pet Screen -->
+          <div class="screen create-pet-screen" id="createPetScreen" style="display: none;">
+            <div class="screen-header">
+              <h2>NEW PET</h2>
+            </div>
+            <div class="create-form">
+              <div class="form-row">
+                <label>NAME:</label>
+                <input type="text" id="petNameInput" maxlength="10" placeholder="PET">
+              </div>
+              <div class="form-row">
+                <label>TYPE:</label>
+                <div class="type-select" id="typeSelect">
+                  <button class="type-option selected" data-type="blob">BLOB</button>
+                  <button class="type-option" data-type="cat">CAT</button>
+                  <button class="type-option" data-type="dog">DOG</button>
+                  <button class="type-option" data-type="bunny">BUNNY</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <label>COLOR:</label>
+                <input type="color" id="petColorInput" value="#7C9EB2">
+              </div>
+            </div>
+            <div class="create-preview">
+              <div class="pet preview-pet" id="createPreviewPet">
+                <div class="pet-body">
+                  <div class="pet-face">
+                    <div class="pet-eyes">
+                      <div class="eye left"></div>
+                      <div class="eye right"></div>
+                    </div>
+                    <div class="pet-mouth"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="create-actions">
+              <button class="arcade-btn cancel" data-back="petSelect">CANCEL</button>
+              <button class="arcade-btn confirm" id="confirmCreateBtn">CREATE</button>
+            </div>
+          </div>
+
+          <!-- Mini Game: Catch -->
+          <div class="screen mini-game" id="catchGame" style="display: none;">
+            <div class="game-hud">
+              <span>SCORE: <span id="catchScore">0</span></span>
+              <span>TIME: <span id="catchTime">30</span></span>
+            </div>
+            <div class="catch-area" id="catchArea">
+              <div class="falling-item" id="fallingItem"></div>
+              <div class="catch-basket" id="catchBasket"></div>
+            </div>
+            <button class="arcade-btn" id="startCatchBtn">START</button>
+            <button class="back-btn arcade-btn" data-back="gamesScreen">QUIT</button>
+          </div>
+
+          <!-- Mini Game: Memory -->
+          <div class="screen mini-game" id="memoryGame" style="display: none;">
+            <div class="game-hud">
+              <span>MEMORY</span>
+              <span>PAIRS: <span id="memoryPairs">0</span>/6</span>
+            </div>
+            <div class="catch-area" id="memoryArea">
+              <!-- Memory grid generated by JS -->
+            </div>
+            <button class="back-btn arcade-btn" data-back="gamesScreen">QUIT</button>
+          </div>
+
+          <!-- Mini Game: Reaction -->
+          <div class="screen mini-game" id="reactionGame" style="display: none;">
+            <div class="game-hud">
+              <span>REFLEX TEST</span>
+              <span>TIME: <span id="reactionTime">0</span>ms</span>
+            </div>
+            <div class="catch-area" id="reactionArea">
+              <!-- Reaction game generated by JS -->
+            </div>
+            <button class="back-btn arcade-btn" data-back="gamesScreen">QUIT</button>
+          </div>
+
+          <!-- Notification Area -->
+          <div class="notification-area" id="notifications"></div>
+        </div>
+      </div>
+      
+      <div class="device-controls">
+        <div class="dpad">
+          <button class="dpad-btn up" data-dir="up"></button>
+          <button class="dpad-btn down" data-dir="down"></button>
+          <button class="dpad-btn left" data-dir="left"></button>
+          <button class="dpad-btn right" data-dir="right"></button>
+          <div class="dpad-center"></div>
+        </div>
+        <div class="action-btns">
+          <button class="device-btn a" id="btnA">A</button>
+          <button class="device-btn b" id="btnB">B</button>
+        </div>
+      </div>
+      
+      <div class="device-speaker">
+        <div class="speaker-grille"></div>
+      </div>
+    </div>
+    
+    <div class="arcade-base">
+      <div class="coin-slot">
+        <div class="coin-insert"></div>
+      </div>
+      <div class="brand">PIXEL PETS</div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/pet.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
